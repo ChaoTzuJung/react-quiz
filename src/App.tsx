@@ -15,11 +15,11 @@ const App = () => {
   const [ loading, setLoading ] = useState(false);
   const [ questions, setQuestions ] = useState<QuestionState[]>([]);
   const [ number, setNumber ] = useState(0);
-  const [ userAwnsers, setUserAwnsers ] = useState<AnswerObject[]>([]);
+  const [ userAnswers, setUserAnswers ] = useState<AnswerObject[]>([]);
   const [ score, setScore ] = useState(0);
   const [ gameOver, setGameOver ] = useState(true);
 
-
+  // https://stackoverflow.com/questions/53898810/executing-async-code-on-update-of-state-with-react-hooks
   // 模擬 DidUpdate
   // useEffect(() => {
   //   console.log(questions)
@@ -40,7 +40,7 @@ const App = () => {
 
       setQuestions(newQuestions);
       setScore(0);
-      setUserAwnsers([]);
+      setUserAnswers([]);
       setNumber(0);
       setLoading(false);
   };
@@ -49,8 +49,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>REACT QUZI</h1>
-      {gameOver || userAwnsers.length === TOTAL_QUESTIONS ? (
+      <h1>REACT QUIZ</h1>
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
         <button className="start" onClick={startTrivia}>Start</button>
       ) : null}
       {!gameOver ? <p className="score">Score:</p> : null}
@@ -60,12 +60,19 @@ const App = () => {
           questionNr={number + 1}
           totalQuestions={TOTAL_QUESTIONS}
           question={questions[number].question}
-          awnsers={questions[number].awnser}
-          userAnswer={userAwnsers ? userAwnsers[number] : undefined}
+          answers={questions[number].answer}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
           callback={checkAnswer}          
         />
       )}
-      <button className="start" onClick={nextQuestuin}>Next Question</button>
+      {
+        !gameOver &&
+        !loading &&
+        userAnswers.length === number + 1 &&
+        number + 1 !== TOTAL_QUESTIONS ? (
+          <button className="start" onClick={nextQuestuin}>Next Question</button>
+        ) : null
+      }
     </div>
   )
 }
