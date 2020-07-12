@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import QuestionCard from './components/QuestionCard';
 import { Difficulty, QuestionState, fetchQuizQuestions } from './api';
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -44,6 +44,7 @@ const App = () => {
       setNumber(0);
       setLoading(false);
   };
+
   const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
     if(!gameOver) {
       // User answer
@@ -79,7 +80,7 @@ const App = () => {
       {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
         <button className="start" onClick={startTrivia}>Start</button>
       ) : null}
-      {!gameOver ? <p className="score">Score:</p> : null}
+      {!gameOver ? <p className="score">Score: {score}</p> : null}
       {loading && <p>Loading Questions...</p>}
       {!loading && !gameOver && (
         <QuestionCard
