@@ -1,4 +1,7 @@
 import React from 'react';
+// Styles
+import { Wrapper, ButtonWrapper } from './QuestionCard.styles';
+// Types
 import { AnswerObject } from '../App';
 
 
@@ -19,22 +22,27 @@ const QuestionCard: React.FC<Props> = ({
     questionNr,
     totalQuestions
 }) => (
-    <div>
+    <Wrapper>
         <p className="number">
             Questions: {questionNr} / {totalQuestions}
         </p>
         <p dangerouslySetInnerHTML={{ __html: question }} />
         <div>
             {answers.map(answer => (
-                <div key={answer}>
-                    {/* Alse can  disabled={!!userAnswer} */}
+                <ButtonWrapper
+                    key={answer}
+                    correct={userAnswer?.correctAnswer === answer}
+                    userClicked={userAnswer?.answer === answer}
+                >
+                    {/* convert this one from object | undefined to boolean can use double banks(double exclamation marks) */}
+                    {/* Also can disabled={!!userAnswer} */}
                     <button disabled={userAnswer ? true : false} value={answer} onClick={callback}>
                         <span dangerouslySetInnerHTML={{ __html: answer }} />
                     </button>
-                </div>
+                </ButtonWrapper>
             ))}
         </div>
-    </div>
+    </Wrapper>
 )
 
 export default QuestionCard;
